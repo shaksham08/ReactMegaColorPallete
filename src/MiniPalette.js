@@ -50,8 +50,12 @@ function MiniPalette(props) {
       key={color.name}
     ></div>
   ));
+  const handleClick = () => {
+    console.log(props.id);
+    props.handleClick(props.id);
+  };
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleClick}>
       <div className={classes.colors}>{miniColorBoxes}</div>
       <h5 className={classes.title}>
         {paletteName} <span className={classes.emoji}>{emoji}</span>

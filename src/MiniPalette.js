@@ -24,9 +24,12 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "0",
+    margin:"0px",
+   paddingBottom:"1rem",
+    paddingTop:"0.5rem",
     color: "black",
-    paddingTop: "0.2rem",
+    fontSize:"1rem",
+    //paddingTop: "0.2rem",
   },
   emoji: {
     fontSize: "1.3rem",
@@ -35,10 +38,11 @@ const styles = {
     height: "25%",
     width: "20%",
     display: "inline-block",
-    marging: "0 auto",
+    margin: "0 auto",
     position: "relative",
-    marginBottom: "-4px",
+    marginBottom: "-5px",
   },
+
 };
 
 function MiniPalette(props) {
@@ -58,7 +62,7 @@ function MiniPalette(props) {
     <div className={classes.root} onClick={handleClick}>
       <div className={classes.colors}>{miniColorBoxes}</div>
       <h5 className={classes.title}>
-        {paletteName} <span className={classes.emoji}>{emoji}</span>
+       {paletteName}<span className={classes.emoji}>{emoji}</span>
       </h5>
     </div>
   );

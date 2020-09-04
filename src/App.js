@@ -33,6 +33,7 @@ function App() {
         path="/palette/:paletteId/:colorId"
         render={(routerprops) => (
           <SingleColorPalette
+            colorId={routerprops.match.params.colorId}
             palette={generatePalette(
               getSeedColor(routerprops.match.params.paletteId)
             )}

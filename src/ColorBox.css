@@ -5,8 +5,11 @@
   margin: 0 auto;
   position: relative;
   cursor: pointer;
-  margin-bottom: -4px;
+  margin-bottom: -5px;
   outline: none;
+}
+.single .ColorBox{
+  height: 50%;
 }
 
 .copy-button {
@@ -39,7 +42,7 @@
   height: 30px;
   width: 60px;
   bottom: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   right: 0%;
   margin-left: -50px;
   margin-top: -15px;

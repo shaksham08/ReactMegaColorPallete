@@ -1,9 +1,18 @@
 import React, { Component } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Link } from "react-router-dom";
+import chroma from "chroma-js";
+import { withStyles } from "@material-ui/core/styles";
 import "./ColorBox.css";
+import { purple } from "@material-ui/core/colors";
 
-export default class ColorBox extends Component {
+const styles = {
+  copyText: {
+    color: purple,
+  },
+};
+
+class ColorBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +33,10 @@ export default class ColorBox extends Component {
     );
   }
   render() {
+    const { background, classes } = this.props;
+    const isdarkColor = chroma(background).luminance() <= 0.08;
+    console.log(isdarkColor);
+    const islightColor = chroma(background).luminance() >= 0.5;
     return (
       <CopyToClipboard
         text={this.props.background}
@@ -36,23 +49,34 @@ export default class ColorBox extends Component {
           />
           <div className={`copy-message ${this.state.copied && "show"}`}>
             <h1>Copied!</h1>
-            <p>{this.props.background}</p>
+            <p className={classes.copyText}>{this.props.background}</p>
           </div>
           <div className="copy-container">
             <div className="boxContent">
-              <span>{this.props.name}</span>
+              <span className={isdarkColor ? "light-text" : ""}>
+                {this.props.name}
+              </span>
             </div>
-            <button className="copy-button">Copy</button>
+            <button className={`copy-button ${islightColor && "Dark-text"}`}>
+              Copy
+            </button>
           </div>
-          {(!this.props.more?"":<Link
-            to={`/palette/${this.props.paletteId}/${this.props.id}`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className="see-more">More</button>
-          </Link>)}
-          
+          {!this.props.more ? (
+            ""
+          ) : (
+            <Link
+              to={`/palette/${this.props.paletteId}/${this.props.id}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button className={`see-more ${islightColor && "Dark-text"}`}>
+                More
+              </button>
+            </Link>
+          )}
         </div>
       </CopyToClipboard>
     );
   }
 }
+
+export default withStyles(styles)(ColorBox);

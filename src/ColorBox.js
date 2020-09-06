@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 import chroma from "chroma-js";
 import { withStyles } from "@material-ui/core/styles";
 import "./ColorBox.css";
-import { purple } from "@material-ui/core/colors";
 
 const styles = {
   copyText: {
-    color: purple,
+    color: "yellow",
   },
 };
 
@@ -34,8 +33,9 @@ class ColorBox extends Component {
   }
   render() {
     const { background, classes } = this.props;
+
     const isdarkColor = chroma(background).luminance() <= 0.08;
-    console.log(isdarkColor);
+
     const islightColor = chroma(background).luminance() >= 0.5;
     return (
       <CopyToClipboard

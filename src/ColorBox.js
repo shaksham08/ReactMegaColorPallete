@@ -5,9 +5,72 @@ import chroma from "chroma-js";
 import { withStyles } from "@material-ui/core/styles";
 import "./ColorBox.css";
 
+//Defining the styles for this component
 const styles = {
   copyText: {
-    color: "yellow",
+    color: (props) =>
+      chroma(props.background).luminance() >= 0.5 ? "black" : "white",
+  },
+  lightText: {
+    color: (props) =>
+      chroma(props.background).luminance() >= 0.5 ? "black" : "white",
+  },
+  seeMore: {
+    position: "absolute",
+    height: "30px",
+    width: "60px",
+    bottom: "0",
+    fontSize: "0.9rem",
+    right: "0%",
+    marginLeft: "-50px",
+    marginTop: "-15px",
+    border: "none",
+    background: "rgba(255, 255, 255, 0.3)",
+    color: (props) =>
+      chroma(props.background).luminance() >= 0.5 ? "black" : "white",
+    boxShadow: "none",
+    letterSpacing: "1px",
+    textTransform: "uppercase",
+    outline: "none",
+    lineHeight: "30px",
+    cursor: "pointer",
+    textAlign: "center",
+  },
+  copyButton: {
+    position: "absolute",
+    height: "30px",
+    width: "100px",
+    top: "50%",
+    fontSize: "1rem",
+    left: "50%",
+    marginLeft: "-50px",
+    marginTop: "-15px",
+    border: "none",
+    background: "rgba(255, 255, 255, 0.3)",
+    color: (props) =>
+      chroma(props.background).luminance() >= 0.5 ? "black" : "white",
+    boxShadow: "none",
+    opacity: "0",
+    textTransform: "uppercase",
+    outline: "none",
+    lineHeight: "30px",
+    cursor: "pointer",
+    textDecoration: "none",
+  },
+  ColorBox: {
+    width: "20%",
+    height: "25%",
+    display: "inline-block",
+    margin: "0 auto",
+    position: "relative",
+    cursor: "pointer",
+    marginBottom: "-5px",
+    outline: "none",
+    "&:hover": {
+      "& $copyButton": {
+        opacity: "1",
+      },
+    },
   },
 };
 
@@ -32,17 +95,17 @@ class ColorBox extends Component {
     );
   }
   render() {
-    const { background, classes } = this.props;
+    const { classes } = this.props;
 
-    const isdarkColor = chroma(background).luminance() <= 0.08;
-
-    const islightColor = chroma(background).luminance() >= 0.5;
     return (
       <CopyToClipboard
         text={this.props.background}
         onCopy={this.changeCopyState}
       >
-        <div className="ColorBox" style={{ background: this.props.background }}>
+        <div
+          className={classes.ColorBox}
+          style={{ background: this.props.background }}
+        >
           <div
             className={`copy-overlay ${this.state.copied && "show"}`}
             style={{ background: this.props.background }}
@@ -53,11 +116,9 @@ class ColorBox extends Component {
           </div>
           <div className="copy-container">
             <div className="boxContent">
-              <span className={isdarkColor ? "light-text" : ""}>
-                {this.props.name}
-              </span>
+              <span className={classes.lightText}>{this.props.name}</span>
             </div>
-            <button className={`copy-button ${islightColor && "Dark-text"}`}>
+            <button className={`${classes.copyButton} ${classes.lightText}`}>
               Copy
             </button>
           </div>
@@ -68,9 +129,7 @@ class ColorBox extends Component {
               to={`/palette/${this.props.paletteId}/${this.props.id}`}
               onClick={(e) => e.stopPropagation()}
             >
-              <button className={`see-more ${islightColor && "Dark-text"}`}>
-                More
-              </button>
+              <button className={`${classes.seeMore}`}>More</button>
             </Link>
           )}
         </div>

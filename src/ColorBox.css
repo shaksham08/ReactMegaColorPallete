@@ -48,7 +48,7 @@
   transition: all 0.5s;
 }
 
-.see-more {
+/* .see-more {
   position: absolute;
   height: 30px;
   width: 60px;
@@ -67,7 +67,7 @@
   line-height: 30px;
   cursor: pointer;
   text-align: center;
-}
+} */
 
 .boxContent {
   position: absolute;

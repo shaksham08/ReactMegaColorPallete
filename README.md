@@ -13,6 +13,7 @@ This is a massive material UI based color picker project built over React.
 7. [React Transition Group](https://reactcommunity.org/react-transition-group/) - For Transistion Effect.
 8. [JSS](https://cssinjs.org/?v=v10.3.0) - Javascript to describe our styles
 9. [React Component Slider](https://www.npmjs.com/package/rc-slider)
+10. [React Color Picker](https://casesandberg.github.io/react-color/)
 
 ### Other Useful Concepts Used :
 

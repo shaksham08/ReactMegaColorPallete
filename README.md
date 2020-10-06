@@ -9,7 +9,7 @@ This is a massive material UI based color picker project built over React.
 3. [Emoji Mart](https://github.com/missive/emoji-mart) - For EMoji
 4. [React Sortable](https://github.com/clauderic/react-sortable-hoc) - For sorting and dragging color boxes
 5. [React Copy To ClipBoard](https://www.npmjs.com/package/react-copy-to-clipboard) - copy to clipboard
-6. [React Form validator Core](https://www.npmjs.com/package/react-form-validator-core) - Form validation to check for repeated colors.
+6. [React Material UI form validator](https://www.npmjs.com/package/react-material-ui-form-validator) - Form validation to check for repeated colors.
 7. [React Transition Group](https://reactcommunity.org/react-transition-group/) - For Transistion Effect.
 8. [JSS](https://cssinjs.org/?v=v10.3.0) - Javascript to describe our styles
 9. [React Component Slider](https://www.npmjs.com/package/rc-slider)

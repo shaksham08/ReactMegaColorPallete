@@ -21,6 +21,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import DraggableColorBox from "./DraggableColorBox";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { getThemeProps } from "@material-ui/styles";
 
 const drawerWidth = 400;
 
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewPaletteForm() {
+export default function NewPaletteForm(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -123,10 +124,23 @@ export default function NewPaletteForm() {
     setNewName(evt.target.value);
   };
 
+  const handleCreate = () => {
+    const newpalette = {
+      paletteName: "test",
+      id: "test",
+      emoji: "🎨",
+      colors: colors,
+    };
+    console.log(newpalette);
+    props.addColor(newpalette);
+    props.history.push("/");
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
+        color="default"
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -145,6 +159,9 @@ export default function NewPaletteForm() {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
+          <Button variant="contained" color="secondary" onClick={handleCreate}>
+            Create Palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer

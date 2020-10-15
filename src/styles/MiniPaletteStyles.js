@@ -22,7 +22,7 @@ export default {
     justifyContent: "space-between",
     alignItems: "center",
     margin: "0px",
-    paddingBottom: "1rem",
+
     paddingTop: "0.5rem",
     color: "black",
     fontSize: "1rem",

@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -7,21 +7,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import { ChromePicker } from "react-color";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
+
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+
 import DraggableColorBox from "./DraggableColorBox";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getThemeProps } from "@material-ui/styles";
 
 const drawerWidth = 400;
 
@@ -90,6 +85,7 @@ export default function NewPaletteForm(props) {
   const [currColor, setcurrColor] = React.useState("teal");
   const [colors, setColors] = React.useState([]);
   const [newName, setNewName] = React.useState("");
+  const [newPaletteName, setNewPaletteName] = React.useState("");
   useEffect(() => {
     ValidatorForm.addValidationRule("isColorNameUnique", (value) => {
       return colors.every(
@@ -99,7 +95,17 @@ export default function NewPaletteForm(props) {
     ValidatorForm.addValidationRule("isColorUnique", (value) => {
       return colors.every(({ color }) => color !== currColor);
     });
+    ValidatorForm.addValidationRule("isPaletteNameUnique", (value) => {
+      return props.palette.every(
+        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
+      );
+    });
   });
+
+  const deleteBox = (name) => {
+    let newColor = colors.filter((el) => el.name !== name);
+    setColors(newColor);
+  };
 
   const addnewColor = () => {
     const newColor = {
@@ -124,10 +130,14 @@ export default function NewPaletteForm(props) {
     setNewName(evt.target.value);
   };
 
+  const handlePaletteName = (evt) => {
+    setNewPaletteName(evt.target.value);
+  };
+
   const handleCreate = () => {
     const newpalette = {
-      paletteName: "test",
-      id: "test",
+      paletteName: newPaletteName,
+      id: newPaletteName.replace(/ /g, "-"),
       emoji: "🎨",
       colors: colors,
     };
@@ -159,9 +169,19 @@ export default function NewPaletteForm(props) {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
-          <Button variant="contained" color="secondary" onClick={handleCreate}>
-            Create Palette
-          </Button>
+          <ValidatorForm onSubmit={handleCreate} style={{ display: "flex" }}>
+            <TextValidator
+              label="Palette Name"
+              onChange={handlePaletteName}
+              name="newpaletteName"
+              value={newPaletteName}
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={["this field is required", "Name already Exist"]}
+            />
+            <Button variant="contained" color="secondary" type="submit">
+              Create Palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -220,9 +240,13 @@ export default function NewPaletteForm(props) {
         })}
       >
         <div className={classes.drawerHeader} />
-
         {colors.map((el) => (
-          <DraggableColorBox color={el.color} name={el.name} />
+          <DraggableColorBox
+            delete={deleteBox}
+            color={el.color}
+            name={el.name}
+            key={el.name}
+          />
         ))}
       </main>
     </div>

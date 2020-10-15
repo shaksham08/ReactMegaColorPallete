@@ -23,7 +23,11 @@ function App() {
         exact
         path="/palette/new/"
         render={(routerprops) => (
-          <NewPaletteForm addColor={addColor} {...routerprops} />
+          <NewPaletteForm
+            addColor={addColor}
+            palette={palette}
+            {...routerprops}
+          />
         )}
       />
       <Route

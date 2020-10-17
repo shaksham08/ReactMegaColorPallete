@@ -7,16 +7,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import { ChromePicker } from "react-color";
 import Toolbar from "@material-ui/core/Toolbar";
-
+import DraggableColorList from "./DraggableColorList";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
-import DraggableColorBox from "./DraggableColorBox";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import arrayMove from "array-move";
+import { random } from "chroma-js";
 
 const drawerWidth = 400;
 
@@ -78,12 +78,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewPaletteForm(props) {
+export default function NewPaletteForm({
+  palette,
+  addColor,
+  history,
+  maxColor = 20,
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [currColor, setcurrColor] = React.useState("teal");
-  const [colors, setColors] = React.useState([]);
+  const [colors, setColors] = React.useState(palette[0].colors);
   const [newName, setNewName] = React.useState("");
   const [newPaletteName, setNewPaletteName] = React.useState("");
   useEffect(() => {
@@ -96,11 +101,21 @@ export default function NewPaletteForm(props) {
       return colors.every(({ color }) => color !== currColor);
     });
     ValidatorForm.addValidationRule("isPaletteNameUnique", (value) => {
-      return props.palette.every(
+      return palette.every(
         ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
       );
     });
   });
+
+  const addRandomColor = () => {
+    const allcolors = palette.map((el) => el.colors).flat();
+    let randColor = allcolors[Math.floor(Math.random() * allcolors.length)];
+    setColors([...colors, randColor]);
+  };
+
+  const clearColor = () => {
+    setColors([]);
+  };
 
   const deleteBox = (name) => {
     let newColor = colors.filter((el) => el.name !== name);
@@ -119,6 +134,9 @@ export default function NewPaletteForm(props) {
     setOpen(true);
   };
 
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setColors(arrayMove(colors, oldIndex, newIndex));
+  };
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -142,8 +160,8 @@ export default function NewPaletteForm(props) {
       colors: colors,
     };
     console.log(newpalette);
-    props.addColor(newpalette);
-    props.history.push("/");
+    addColor(newpalette);
+    history.push("/");
   };
 
   return (
@@ -205,10 +223,15 @@ export default function NewPaletteForm(props) {
         <Divider />
         <Typography variant="h4">Design Your Palette</Typography>
         <div>
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" onClick={clearColor}>
             Clear Palette
           </Button>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addRandomColor}
+            disabled={colors.length >= maxColor}
+          >
             Random Color
           </Button>
         </div>
@@ -229,6 +252,7 @@ export default function NewPaletteForm(props) {
             color="primary"
             style={{ backgroundColor: currColor }}
             type="submit"
+            disabled={colors.length >= maxColor}
           >
             Add Color
           </Button>
@@ -240,14 +264,12 @@ export default function NewPaletteForm(props) {
         })}
       >
         <div className={classes.drawerHeader} />
-        {colors.map((el) => (
-          <DraggableColorBox
-            delete={deleteBox}
-            color={el.color}
-            name={el.name}
-            key={el.name}
-          />
-        ))}
+        <DraggableColorList
+          delete={deleteBox}
+          colors={colors}
+          axis="xy"
+          onSortEnd={onSortEnd}
+        />
       </main>
     </div>
   );

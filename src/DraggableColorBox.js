@@ -1,6 +1,8 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { SortableElement } from "react-sortable-hoc";
+
 const Styles = {
   root: {
     width: "20%",
@@ -9,7 +11,7 @@ const Styles = {
     margin: "0px auto",
     position: "relative",
     cursor: "pointer",
-    marginBottom: "-5px",
+    marginBottom: "-6px",
     "&:hover $delete": { color: "white", transform: "scale(1.5)" },
   },
   boxContent: {
@@ -51,4 +53,4 @@ function DraggableColorBox(props) {
   );
 }
 
-export default withStyles(Styles)(DraggableColorBox);
+export default SortableElement(withStyles(Styles)(DraggableColorBox));

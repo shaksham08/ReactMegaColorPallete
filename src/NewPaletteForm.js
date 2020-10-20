@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,6 +18,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import arrayMove from "array-move";
 import { random } from "chroma-js";
+import PaletteFormNav from "./PaletteFormNav";
 
 const drawerWidth = 400;
 
@@ -90,7 +92,7 @@ export default function NewPaletteForm({
   const [currColor, setcurrColor] = React.useState("teal");
   const [colors, setColors] = React.useState(palette[0].colors);
   const [newName, setNewName] = React.useState("");
-  const [newPaletteName, setNewPaletteName] = React.useState("");
+
   useEffect(() => {
     ValidatorForm.addValidationRule("isColorNameUnique", (value) => {
       return colors.every(
@@ -148,11 +150,7 @@ export default function NewPaletteForm({
     setNewName(evt.target.value);
   };
 
-  const handlePaletteName = (evt) => {
-    setNewPaletteName(evt.target.value);
-  };
-
-  const handleCreate = () => {
+  const handleCreate = (newPaletteName) => {
     const newpalette = {
       paletteName: newPaletteName,
       id: newPaletteName.replace(/ /g, "-"),
@@ -166,42 +164,12 @@ export default function NewPaletteForm({
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        color="default"
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Persistent drawer
-          </Typography>
-          <ValidatorForm onSubmit={handleCreate} style={{ display: "flex" }}>
-            <TextValidator
-              label="Palette Name"
-              onChange={handlePaletteName}
-              name="newpaletteName"
-              value={newPaletteName}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["this field is required", "Name already Exist"]}
-            />
-            <Button variant="contained" color="secondary" type="submit">
-              Create Palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <PaletteFormNav
+        open={open}
+        classes={classes}
+        palette={palette}
+        handleCreate={handleCreate}
+      />
       <Drawer
         className={classes.drawer}
         variant="persistent"

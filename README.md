@@ -18,3 +18,18 @@ This is a massive material UI based color picker project built over React.
 ### Other Useful Concepts Used :
 
 1. [React Pure Components](https://reactjs.org/docs/react-api.html#reactpurecomponent)
+
+# Screenshots
+
+[1](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/1.png)
+
+[2](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/2.png)
+
+[3](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/3.png)
+
+[4](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/4.png)
+
+[5](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/5.png)
+
+[6](https://github.com/shaksham08/ReactMegaColorPallete/blob/master/Images/6.png)
+

@@ -1,49 +1,38 @@
 import React, { Component } from "react";
-import Slider from "rc-slider";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/styles";
-import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import "rc-slider/assets/index.css";
+import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 import styles from "./styles/NavbarStyles";
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      format: "hex",
-      open: false,
-    };
-    this.handlechange = this.handlechange.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.state = { format: "hex", open: false };
+    this.handleFormatChange = this.handleFormatChange.bind(this);
+    this.closeSnackbar = this.closeSnackbar.bind(this);
   }
-
-  handleClose(event, reason) {
-    this.setState({
-      open: false,
-    });
+  handleFormatChange(e) {
+    this.setState({ format: e.target.value, open: true });
+    this.props.handleChange(e.target.value);
   }
-  handlechange(e) {
-    //! Note that state change always take some time so either use a callback or
-    this.setState({
-      format: e.target.value,
-      open: true,
-    });
-
-    this.props.changeFormat(e.target.value);
+  closeSnackbar() {
+    this.setState({ open: false });
   }
   render() {
-    const { level, changeLevel, classes } = this.props;
+    const { level, changeLevel, showingAllColors, classes } = this.props;
+    const { format } = this.state;
     return (
       <header className={classes.Navbar}>
         <div className={classes.logo}>
-          <Link to="/">reactcolorpicker</Link>
+          <Link to='/'>reactcolorpicker</Link>
         </div>
-        {!this.props.changer ? (
-          ""
-        ) : (
+        {showingAllColors && (
           <div>
             <span>Level: {level}</span>
             <div className={classes.slider}>
@@ -57,11 +46,11 @@ class Navbar extends Component {
             </div>
           </div>
         )}
-
         <div className={classes.selectContainer}>
-          <Select value={this.state.format} onChange={this.handlechange}>
-            <MenuItem value="hex">HEX - #ffff</MenuItem>
-            <MenuItem value="rgb">RGB - rgb(255,255,255)</MenuItem>
+          <Select value={format} onChange={this.handleFormatChange}>
+            <MenuItem value='hex'>HEX - #ffffff</MenuItem>
+            <MenuItem value='rgb'>RGB - rgb(255,255,255)</MenuItem>
+            <MenuItem value='rgba'>RGBA - rgba(255,255,255, 1.0)</MenuItem>
           </Select>
         </div>
         <Snackbar
@@ -69,24 +58,24 @@ class Navbar extends Component {
           open={this.state.open}
           autoHideDuration={3000}
           message={
-            <span id="message-id">
-              Format changed to {this.state.format.toUpperCase()}
+            <span id='message-id'>
+              Format Changed To {format.toUpperCase()}
             </span>
           }
-          ContentProps={{ "aria-describedby": "message-id" }}
-          onClose={this.handleClose}
-          action={
-            <React.Fragment>
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={this.handleClose}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </React.Fragment>
-          }
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          onClose={this.closeSnackbar}
+          action={[
+            <IconButton
+              onClick={this.closeSnackbar}
+              color='inherit'
+              key='close'
+              aria-label='close'
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
         />
       </header>
     );
